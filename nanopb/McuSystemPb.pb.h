@@ -52,7 +52,7 @@ typedef struct _McuSystemPb_boot_notify {
     bool has_oobe;
     McuSystemPb_oobe_notify_t oobe;
     bool has_sysTime;
-    SystemTime_rsp_read_sys_time_t sysTime;
+    SystemTime_req_update_sys_time_t sysTime;
 } McuSystemPb_boot_notify;
 
 typedef struct _McuSystemPb_reboot_reason {
@@ -92,6 +92,19 @@ typedef struct _McuSystemPb_brightness_adapt {
     uint32_t lux;
 } McuSystemPb_brightness_adapt;
 
+typedef struct _McuSystemPb_light_cali_rsp_t {
+    bool has_red_max_lux;
+    uint32_t red_max_lux;
+    bool has_green_max_lux;
+    uint32_t green_max_lux;
+    bool has_blue_max_lux;
+    uint32_t blue_max_lux;
+    bool has_white_max_lux;
+    uint32_t white_max_lux;
+    bool has_cail_coe;
+    float cail_coe;
+} McuSystemPb_light_cali_rsp_t;
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -103,23 +116,25 @@ extern "C" {
 #define McuSystemPb_oobe_notify_t_init_default   {false, 0, {{NULL}, NULL}, false, 0}
 #define McuSystemPb_mcu_status_init_default      {false, 0}
 #define McuSystemPb_enable_mcu_status_init_default {false, 0}
-#define McuSystemPb_boot_notify_init_default     {false, 0, false, McuSystemPb_oobe_notify_t_init_default, false, SystemTime_rsp_read_sys_time_t_init_default}
+#define McuSystemPb_boot_notify_init_default     {false, 0, false, McuSystemPb_oobe_notify_t_init_default, false, SystemTime_req_update_sys_time_t_init_default}
 #define McuSystemPb_reboot_reason_init_default   {false, 0, false, SystemTime_rsp_read_sys_time_t_init_default, false, 0}
 #define McuSystemPb_backlight_init_default       {false, 0, false, 0, false, 0, false, 0}
 #define McuSystemPb_screen_rotation_init_default {false, 0}
 #define McuSystemPb_conan_flag_t_init_default    {false, 0}
 #define McuSystemPb_brightness_adapt_init_default {false, 0, false, 0}
+#define McuSystemPb_light_cali_rsp_t_init_default {false, 0, false, 0, false, 0, false, 0, false, 0}
 #define McuSystemPb_motor_cali_rsp_t_init_zero   {false, 0, false, 0, false, 0}
 #define McuSystemPb_band_language_t_init_zero    {false, 0, {{NULL}, NULL}, false, 0}
 #define McuSystemPb_oobe_notify_t_init_zero      {false, 0, {{NULL}, NULL}, false, 0}
 #define McuSystemPb_mcu_status_init_zero         {false, 0}
 #define McuSystemPb_enable_mcu_status_init_zero  {false, 0}
-#define McuSystemPb_boot_notify_init_zero        {false, 0, false, McuSystemPb_oobe_notify_t_init_zero, false, SystemTime_rsp_read_sys_time_t_init_zero}
+#define McuSystemPb_boot_notify_init_zero        {false, 0, false, McuSystemPb_oobe_notify_t_init_zero, false, SystemTime_req_update_sys_time_t_init_zero}
 #define McuSystemPb_reboot_reason_init_zero      {false, 0, false, SystemTime_rsp_read_sys_time_t_init_zero, false, 0}
 #define McuSystemPb_backlight_init_zero          {false, 0, false, 0, false, 0, false, 0}
 #define McuSystemPb_screen_rotation_init_zero    {false, 0}
 #define McuSystemPb_conan_flag_t_init_zero       {false, 0}
 #define McuSystemPb_brightness_adapt_init_zero   {false, 0, false, 0}
+#define McuSystemPb_light_cali_rsp_t_init_zero   {false, 0, false, 0, false, 0, false, 0, false, 0}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define McuSystemPb_motor_cali_rsp_t_f0Param_tag 1
@@ -147,6 +162,11 @@ extern "C" {
 #define McuSystemPb_conan_flag_t_data_tag        1
 #define McuSystemPb_brightness_adapt_brightness_tag 1
 #define McuSystemPb_brightness_adapt_lux_tag     2
+#define McuSystemPb_light_cali_rsp_t_red_max_lux_tag 1
+#define McuSystemPb_light_cali_rsp_t_green_max_lux_tag 2
+#define McuSystemPb_light_cali_rsp_t_blue_max_lux_tag 3
+#define McuSystemPb_light_cali_rsp_t_white_max_lux_tag 4
+#define McuSystemPb_light_cali_rsp_t_cail_coe_tag 5
 
 /* Struct field encoding specification for nanopb */
 #define McuSystemPb_motor_cali_rsp_t_FIELDLIST(X, a) \
@@ -187,7 +207,7 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  sysTime,           3)
 #define McuSystemPb_boot_notify_CALLBACK NULL
 #define McuSystemPb_boot_notify_DEFAULT NULL
 #define McuSystemPb_boot_notify_oobe_MSGTYPE McuSystemPb_oobe_notify_t
-#define McuSystemPb_boot_notify_sysTime_MSGTYPE SystemTime_rsp_read_sys_time_t
+#define McuSystemPb_boot_notify_sysTime_MSGTYPE SystemTime_req_update_sys_time_t
 
 #define McuSystemPb_reboot_reason_FIELDLIST(X, a) \
 X(a, STATIC,   OPTIONAL, UINT32,   reason,            1) \
@@ -221,6 +241,15 @@ X(a, STATIC,   OPTIONAL, UINT32,   lux,               2)
 #define McuSystemPb_brightness_adapt_CALLBACK NULL
 #define McuSystemPb_brightness_adapt_DEFAULT NULL
 
+#define McuSystemPb_light_cali_rsp_t_FIELDLIST(X, a) \
+X(a, STATIC,   OPTIONAL, UINT32,   red_max_lux,       1) \
+X(a, STATIC,   OPTIONAL, UINT32,   green_max_lux,     2) \
+X(a, STATIC,   OPTIONAL, UINT32,   blue_max_lux,      3) \
+X(a, STATIC,   OPTIONAL, UINT32,   white_max_lux,     4) \
+X(a, STATIC,   OPTIONAL, FLOAT,    cail_coe,          5)
+#define McuSystemPb_light_cali_rsp_t_CALLBACK NULL
+#define McuSystemPb_light_cali_rsp_t_DEFAULT NULL
+
 extern const pb_msgdesc_t McuSystemPb_motor_cali_rsp_t_msg;
 extern const pb_msgdesc_t McuSystemPb_band_language_t_msg;
 extern const pb_msgdesc_t McuSystemPb_oobe_notify_t_msg;
@@ -232,6 +261,7 @@ extern const pb_msgdesc_t McuSystemPb_backlight_msg;
 extern const pb_msgdesc_t McuSystemPb_screen_rotation_msg;
 extern const pb_msgdesc_t McuSystemPb_conan_flag_t_msg;
 extern const pb_msgdesc_t McuSystemPb_brightness_adapt_msg;
+extern const pb_msgdesc_t McuSystemPb_light_cali_rsp_t_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
 #define McuSystemPb_motor_cali_rsp_t_fields &McuSystemPb_motor_cali_rsp_t_msg
@@ -245,6 +275,7 @@ extern const pb_msgdesc_t McuSystemPb_brightness_adapt_msg;
 #define McuSystemPb_screen_rotation_fields &McuSystemPb_screen_rotation_msg
 #define McuSystemPb_conan_flag_t_fields &McuSystemPb_conan_flag_t_msg
 #define McuSystemPb_brightness_adapt_fields &McuSystemPb_brightness_adapt_msg
+#define McuSystemPb_light_cali_rsp_t_fields &McuSystemPb_light_cali_rsp_t_msg
 
 /* Maximum encoded size of messages (where known) */
 /* McuSystemPb_band_language_t_size depends on runtime parameters */
@@ -255,6 +286,7 @@ extern const pb_msgdesc_t McuSystemPb_brightness_adapt_msg;
 #define McuSystemPb_brightness_adapt_size        12
 #define McuSystemPb_conan_flag_t_size            11
 #define McuSystemPb_enable_mcu_status_size       6
+#define McuSystemPb_light_cali_rsp_t_size        29
 #define McuSystemPb_mcu_status_size              6
 #define McuSystemPb_motor_cali_rsp_t_size        18
 #define McuSystemPb_reboot_reason_size           38

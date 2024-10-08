@@ -33,7 +33,7 @@ message enable_mcu_status {
 message boot_notify {
   optional uint32 type = 1;
   optional oobe_notify_t oobe = 2;
-  optional SystemTime.rsp_read_sys_time_t sysTime = 3;
+  optional SystemTime.req_update_sys_time_t sysTime = 3;
 }
 
 message reboot_reason {
@@ -60,4 +60,12 @@ message conan_flag_t {
 message brightness_adapt {
   optional uint32 brightness = 1;
   optional uint32 lux = 2;
+}
+
+message light_cali_rsp_t {
+  optional uint32 red_max_lux = 1;
+  optional uint32 green_max_lux = 2;
+  optional uint32 blue_max_lux = 3;
+  optional uint32 white_max_lux = 4;
+  optional float cail_coe = 5;
 }

@@ -1,0 +1,230 @@
+syntax = "proto3";
+
+package PreferenceProvider;
+
+import "SystemTime.proto";
+import "McuSystemPb.proto";
+
+// Enum definitions
+enum McuRebootRst {
+    MCU_REBOOT_RST_DEBUG = 0;
+    MCU_REBOOT_RST_EXTPIN = 1;
+    MCU_REBOOT_RST_FAULT = 2;
+    MCU_REBOOT_RST_OTHERS = 3;
+}
+
+enum OppoCmd {
+    OPPO_CMD_START_ZERO = 0;
+    OPPO_CMD_OFF_WRIST_SWITCH = 1;
+    OPPO_CMD_LIFT_WRIST_SWITCH = 2;
+    OPPO_CMD_ACTIVITY_PROFILE = 3;
+    OPPO_CMD_HEARTRATE_HISCTRL_SWITCH = 4;
+    OPPO_CMD_STEP_AUTOUPLOAD = 5;
+    OPPO_CMD_GET_MCU_VERSION = 6;
+    OPPO_CMD_SET_SWITCH_CMD = 7;
+    OPPO_CMD_SCREEN_STATUS = 8;
+    OPPO_CMD_CHARGE_STATUS = 9;
+    OPPO_CMD_SPORT_HR_WARN = 10;
+    OPPO_CMD_GPS_CMD = 11;
+    OPPO_CMD_WRITE_BLE_ADDR = 12;
+    OPPO_CMD_ACTIVITY_CAL_PROFILE = 13;
+    OPPO_CMD_MCU_MODE = 14;
+    OPPO_CMD_STATIC_HR_WARN = 15;
+    OPPO_CMD_MSM2500_STATUS = 16;
+    OPPO_CMD_BATTERY_INFO = 17;
+    OPPO_CMD_GPS_DATA = 18;
+    OPPO_CMD_SPORTS_DETECT = 19;
+    OPPO_CMD_SPORTS_AUTOPAUSE = 20;
+    OPPO_CMD_PHONE_AIR_PRESSURE = 21;
+    OPPO_CMD_SYNC_TIMESTAMP = 22;
+    OPPO_CMD_TEST = 101;
+}
+
+enum OppoGpsCmd {
+    OPPO_GPS_CMD_NULL = 0;
+    OPPO_GPS_CMD_LOCATION = 1;
+    OPPO_GPS_CMD_AGPS_LOCATION_SWITCH = 2;
+}
+
+// Message definitions
+message OppoSedentaryParamsT {
+    uint32 sw = 1;
+    uint32 startTime = 2;
+    uint32 endTime = 3;
+    uint32 exclude = 4;
+}
+
+message OppoUserProfileParamT {
+    uint32 weight = 1;
+    uint32 height = 2;
+    uint32 age = 3;
+    uint32 sex = 4;
+}
+
+message OppoActivityStepAimParamT {
+    uint32 stepAim = 1;
+}
+
+message OppoActivityCalorieAimParamT {
+    uint32 calorieAim = 1;
+}
+
+message OppoMcuModeT {
+    uint32 mode = 1;
+    SystemTime.req_update_sys_time_t sysTime = 2;
+    uint32 type = 3;
+}
+
+message OppoMcuWorkModeResponseT {
+    uint32 mode = 1;
+    McuSystemPb.light_cali_rsp_t lightCali = 2;
+    SystemTime.rsp_read_sys_time_t mcuSysTime = 4;
+    uint32 lastMode = 3;
+    int32 rebootReason = 5;
+    uint32 type = 6;
+}
+
+message OppoTimeProfileParamT {
+    oneof data {
+        SystemTime.req_update_gmt_time_t gmt = 1;
+        SystemTime.req_update_sys_time_t sys = 2;
+        SystemTime.req_read_sys_time_t read = 3;
+    }
+}
+
+message SWITCH_T {
+    uint32 sw = 1;
+}
+
+message OppoSetSwitchCmdT {
+    int32 cmd = 1;
+    oneof payload {
+        SWITCH_T offwristSw = 2;
+        SWITCH_T liftwristSw = 3;
+        SWITCH_T backlightSw = 4;
+        SWITCH_T hisctrlSw = 5;
+        SWITCH_T workmodeSw = 6;
+    }
+}
+
+message PreferenceBody {
+    int32 cmd = 1;
+    oneof payload {
+        OppoUserProfileParamT userprofile = 2;
+        OppoSedentaryParamsT sedentary = 3;
+        OppoActivityStepAimParamT step = 4;
+        OppoTimeProfileParamT gmttime = 5;
+        OppoSetSwitchCmdT sw = 6;
+        SportHeartrateWarnDataT hr = 7;
+        GpsParamsT mode = 8;
+        ScreenStatusT sreenStatus = 9;
+        ChargeStatusT chargeStatus = 10;
+        OppoActivityCalorieAimParamT cal = 11;
+        OppoMcuModeT workmode = 12;
+        CmdStaticHrWarnT cmdHrWarn = 13;
+        Msm2500StatusT cpuStatus = 14;
+        BatteryInfo batteryInfo = 15;
+        OppoGpsDataCmdT gpsData = 16;
+        OppoSportsDetectParamsT params = 17;
+        OppoSportsAutopauseParamsT autopauseParams = 18;
+        PhoneAirPressureT pressureVal = 19;
+        SyncTimestampT timestamp = 20;
+    }
+}
+
+message OppoSportsDetectParamsT {
+    uint32 sw = 1;
+    uint32 continuousTime = 2;
+}
+
+message PhoneAirPressureT {
+    int32 errCode = 1;
+    float pressureVal = 2;
+}
+
+message OppoSportsAutopauseParamsT {
+    uint32 sw = 1;
+    uint32 reserve = 2;
+}
+
+message SyncTimestampT {
+    sfixed64 hostTimestamp = 1;
+}
+
+message SportHeartrateWarnDataT {
+    uint32 sportHrWarnEnable = 1;
+    uint32 sportHrWarnValue = 2;
+}
+
+message GpsParamsT {
+    string str = 1;
+}
+
+message ScreenStatusT {
+    uint32 screenStatus = 1;
+}
+
+message ChargeStatusT {
+    uint32 chargeStatus = 1;
+}
+
+message McuVersion {
+    bytes romVersion = 1;
+    bytes hardwareVersion = 2;
+    bytes algoVersion = 3;
+    uint32 bn = 4;
+}
+
+message OWSwitch {
+    uint32 sw = 1;
+}
+
+message OWStatus {
+    uint32 status = 1;
+}
+
+message RequestOWSwitchStatus {
+    uint32 type = 1;
+}
+
+message ResponseOWSwitchStatus {
+    uint32 status = 1;
+}
+
+message RequestOWStatus {
+    uint32 type = 1;
+}
+
+message Msm2500StatusT {
+    uint32 cpuStatus = 1;
+}
+
+message CmdStaticHrWarnT {
+    uint32 hrWarnHigh = 1;
+    uint32 hrWarnLow = 2;
+    uint32 hrDuration = 3;
+}
+
+message BatteryInfo {
+    uint32 voltage = 1;
+    uint32 capacity = 2;
+}
+
+message OppoGpsDataCmdT {
+    int32 cmd = 1;
+    oneof payload {
+        GpsRefLocationT gpsLocInfo = 2;
+        GpsAssistedLocationSwitchT agpsLocSwitch = 3;
+    }
+}
+
+message GpsAssistedLocationSwitchT {
+    uint32 assistedSwitchStatus = 1;
+}
+
+message GpsRefLocationT {
+    uint32 gpsRefUtc = 1;
+    sint32 gpsRefLat = 2;
+    sint32 gpsRefLon = 3;
+    sint32 gpsRefAltitude = 4;
+}

@@ -39,4 +39,7 @@ PB_BIND(McuSystemPb_conan_flag_t, McuSystemPb_conan_flag_t, AUTO)
 PB_BIND(McuSystemPb_brightness_adapt, McuSystemPb_brightness_adapt, AUTO)
 
 
+PB_BIND(McuSystemPb_light_cali_rsp_t, McuSystemPb_light_cali_rsp_t, AUTO)
+
+
 
