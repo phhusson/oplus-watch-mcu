@@ -1,0 +1,75 @@
+syntax = "proto3";
+package Oxygen;
+
+message CurctrlOxygenRequestInfo {
+  uint32 switch = 1;
+  uint32 interval = 2;
+}
+
+message SleepOxygenDetectSw {
+  uint32 spo2DetectInSleep = 1;
+  uint32 spo2DetectInSleep_type = 2;
+}
+
+message OxygenData
+{
+  uint32 index = 1;
+  uint32 startTime = 2;
+  repeated uint32 minOffset = 3;
+  repeated bytes type_offset = 4;
+  repeated bytes spo2 = 5;
+}
+
+message Spo2 {
+  uint32 value = 1;
+  uint32 timestamp = 2;
+}
+
+message Spo2HistogramItem {
+  uint32 minSpo2 = 1;
+  uint32 maxSpo2 = 2;
+}
+
+message DailyOxygenStatsReq {
+  uint32 offset = 1;
+}
+
+message DailyOxygenStatsData {
+  Spo2 latestSpo2 = 1;
+  Spo2 minSpo2 = 2;
+  Spo2 maxSpo2 = 3;
+  repeated Spo2HistogramItem dailySpo2s = 4;
+}
+
+message OxygenWarnItem {
+  uint32 startTime = 1;
+  uint32 endTime = 2;
+  uint32 minOxygen = 3;
+  uint32 maxOxygen = 4;
+}
+
+message OxygenWarn {
+  uint32 altitude = 1;
+  uint32 altitude_valid = 2;
+  OxygenWarnItem oxygen = 3;
+}
+
+message OxygenWarnDetailRequest {
+  uint32 offset = 1;
+}
+
+message OxygenWarnDetail
+{
+  uint32 index = 1;
+  repeated OxygenWarnItem items = 2;
+}
+
+message OxygenWarnPackage
+{
+  uint32 index = 1;
+  repeated OxygenWarnItem items = 2;
+}
+message OxygenPlateau
+{
+  uint32 altitude = 1;
+}

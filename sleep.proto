@@ -1,0 +1,153 @@
+syntax = "proto3";
+package Sleep;
+
+message SleepStateRequest {
+    uint32 rsv = 1;
+}
+
+message SleepStateResponse {
+    uint32 state = 1;
+}
+
+message SleepRemConfig {
+    uint32 enable = 1;
+}
+
+message RemSwitchRequest {
+    uint32 switch = 1;
+}
+
+message RemSwithResponse {
+    uint32 responseValues = 1;
+}
+
+message SleepDataResponse {
+    uint32 index = 1;
+    uint32 startTime = 2;
+    bytes state = 3;
+}
+
+message SleepState {
+    uint32 startTime = 1;
+    uint32 endTime = 2;
+    uint32 state = 3;
+}
+
+message SleepWakeUpTime {
+    uint32 wakeuptime = 1;
+    uint32 course = 2;
+}
+
+message OsaResult {
+    int32  osa_level = 1;
+    uint32 timestamp = 2;
+}
+
+message SleepScore {
+    uint32 score = 1;
+    uint32 timestamp = 2;
+}
+
+message SleepFixData {
+    repeated SleepFixDataItem item_list = 1;
+}
+
+message SleepFixDataItem {
+    int32 calibrate_type = 1;
+    int32 start_time = 2;
+    int32 end_time = 3;
+    int32 status = 4;
+}
+
+message SleepFixResult {
+  int32 resultCode = 1;
+}
+
+message RemindPopUp {
+    enum PopUpType {
+        STAY_UP_BED = 0;
+        BED_TIME = 1;
+    }
+    PopUpType pop_up_type = 1;
+    int32 bed_time = 2;
+    int32 wake_up_time = 3;
+}
+
+message SleepModeSettings {
+    int32 time = 1;
+    int32 accordRest = 2;
+    int32 startNow = 3;
+    int32 stateSync = 4;
+    int32 stateSyncTime = 5;
+}
+
+message SleepRestSettings {
+    int32 user_habits_switch = 1;
+    repeated UserRest users_rest = 2;
+}
+
+message UserRest {
+    int32 timestamp = 1;
+    int32 bedTime = 2;
+    int32 wakeUpTime = 3;
+    int32 restType = 4;
+    int32 wakeUpBellSwitch = 5;
+    int32 vibrationSwitch = 6;
+    int32 remindLaterSwitch = 7;
+    int32  restDateList = 8;
+}
+
+message CloseMusic {
+    int32 closeMusic = 1;
+}
+
+message BedTimeReminder {
+    int32 reminder_bed_time = 1;
+    int32 bed_time_switch = 2;
+}
+
+message StayUpBedTimeReminder {
+    int32 stay_up_bed_time = 1;
+    int32  stay_up_bed_time_switch = 2;
+}
+
+
+message GetDevicesSleepModelResult {
+    int32 code = 1;
+}
+
+message SleepGoal {
+    int32 sleepGoalTime = 1;
+}
+
+message PhoneSleepStatsData {
+    uint32 index = 1;
+    repeated PhoneSleepStatsDetail details = 2;
+}
+
+message PhoneSleepStatsDetail {
+    uint32 timestamp = 1;
+    uint32 avgSleepSpo2 = 2;
+    uint32 baseSleepHr = 3;
+    uint32 minSleepHr = 4;
+    uint32 maxSleepHr = 5;
+    uint32 minSleepBreath = 6;
+    uint32 maxSleepBreath = 7;
+}
+
+message McuSleepStatsData {
+    uint32 index = 1;
+    repeated McuSleepStatsDetail details = 2;
+}
+
+message McuSleepStatsDetail {
+    uint32 timestamp = 1;
+    uint32 avgSleepSpo2 = 2;
+    uint32 baseSleepHr = 3;
+    uint32 minSleepHr = 4;
+    uint32 maxSleepHr = 5;
+    uint32 minSleepBreath = 6;
+    uint32 maxSleepBreath = 7;
+    uint32 sleepScore = 8;
+    uint32 snoreRisk = 9;
+}

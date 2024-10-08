@@ -1,0 +1,138 @@
+syntax = "proto3";
+package Assessment;
+
+message AssessmentRecordDataList {
+    uint32 index = 1;
+    repeated AssessmentRecordData data = 2;
+}
+
+message AssessmentRecordData {
+    uint32 start_time = 1;
+    uint32 end_time = 2;
+    uint32 hr = 3;
+    uint32 stress = 4;
+    uint32 spo2 = 5;
+    string ecg_id = 6;
+    uint32 ecg_result = 7;
+    uint32 pwv_comparison_result = 8;
+    float pwv = 9;
+    string pwv_id = 10;
+    string valid_items = 11;
+    uint32 total_items_num = 12;
+    string concerned_items = 13;
+    uint32 version = 14;
+    string extra = 15;
+    UserBodyInfo user_body_info = 16;
+    WristTemperatureInfo wrist_temperature_info = 17;
+    SingleSleepInfo singleSleepInfo =18;
+    SingleOsaInfo singleOsaInfo = 19;
+    MultipleSignsAnalysis sleepCrossAnalysis = 20;
+    TempCrossAnalysis tempCrossAnalysis = 21;
+    SnoreAnalysis snoreAnalysis = 22;
+    ScoreAnalysis scoreAnalysis = 23;
+}
+
+message UserBodyInfo{
+  string deviceName = 1;
+  int32 sex = 2;
+  float weight = 3;
+  float height = 4;
+  int32 age = 5;
+}
+
+message WristTemperatureInfo{
+  float wristTempValue = 1;
+  int32 baseLineLeftTime = 2;
+  int32 state = 3;
+}
+
+message SingleSleepInfo{
+  int32 state = 1;
+  int32 sleepScore = 2;
+}
+
+message SingleOsaInfo{
+  int32 state = 1;
+  int32 osaLevel = 2;
+}
+
+message TempCrossAnalysis{
+  int32 state = 1;
+  MultipleSignsAnalysis analysisResult = 2;
+}
+
+message SnoreAnalysis {
+  uint32 timestamp = 1;
+  uint32 totalOsaResult = 2;
+  repeated TimeResult details = 3;
+}
+
+message TimeResult {
+  uint32 timestamp = 1;
+  int32 value = 2;
+}
+
+message ScoreAnalysis {
+  uint32 timestamp = 1;
+  uint32 lastAvgScore = 2;
+  uint32 curAvgScore = 3;
+  repeated TimeResult details = 4;
+}
+
+message MultipleSignsAnalysis {
+  uint32 timestamp = 1;
+  uint32 type = 2;
+  uint32 status = 3;
+  repeated SignsData details = 4;
+  string code = 5;
+}
+
+message SignsData {//
+  uint32 type = 1;
+  string legend = 2;
+  repeated uint32 timeList = 3;
+  repeated uint32 values = 4;
+  repeated uint32 baselines = 5;
+  repeated uint32 safeUpperLimit = 6;
+  repeated uint32 safeLowerLimit = 7;
+  uint32 totalDays = 8;
+  uint32 currentDays = 9;
+}
+
+message ManualSpo2Request{
+    uint32 switch = 1;
+    uint32 interval = 2;
+}
+
+message ManualSpo2Response {
+    uint32 altitude = 1;
+    uint32 spo2 = 2;
+    uint32 value = 3;
+    uint32 reliability = 4;
+    uint32 status = 5;
+    uint32 debug = 6;
+}
+
+message ManualStressRequest {
+    uint32 switch = 1;
+    uint32 interval = 2;
+}
+
+message ManualStressResponse {
+    uint32 stress_val = 1;
+    uint32 status = 2;
+    uint32 reliability = 3;
+}
+
+message PwvStatusSetRequest
+{
+    uint32 status = 1;
+}
+
+message PrepareRequest {
+    uint32 type = 1;
+}
+
+message PrepareResponse {
+    uint32 state = 1;
+}

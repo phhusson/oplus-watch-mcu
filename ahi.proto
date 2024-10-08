@@ -1,0 +1,8 @@
+syntax = "proto3";
+package Ahi;
+
+message AhiDetailResponse {
+    uint32 index = 1;
+    uint32 start_time = 2;
+    repeated uint32 state = 3;
+}

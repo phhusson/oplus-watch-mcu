@@ -1,0 +1,237 @@
+syntax = "proto3";
+package Settings;
+
+enum PREFERENCE {
+    CMD_PREFERENCE_NONE = 0;
+    CMD_USER_PROFILE = 1;
+    CMD_SET_SEDENTARY = 2;
+    CMD_ACTIVITY_PROFILE = 3;
+    CMD_SET_SWITCH_CMD = 7;
+    CMD_SPORT_HR_WARN = 10;
+    CMD_GPS_CMD = 11;
+    CMD_ACTIVITY_CAL_PROFILE = 13;
+    CMD_DAILY_HR_WARN = 15;
+    CMD_SPORT_AUTO_DETECT = 19;
+    CMD_SPORT_AUTO_PAUSE = 20;
+    CMD_AIR_PRESSURE = 21;
+}
+
+enum SWITCH_CMD {
+    CMD_SWITCH_NONE = 0;
+    CMD_HEARTRATE_HISCTRL_SWITCH = 4;
+    CMD_FC_SWITCH = 6;
+    CMD_TEST_SWITCH = 10;
+}
+
+enum HEALTH_SETTING_CMD {
+    CMD_HEALTH_NONE = 0;
+    CMD_HEALTH_SPORT_AUTO_PAUSE = 1;
+}
+
+message Sedentary {
+    uint32 sw = 1;
+    uint32 startTime = 2;
+    uint32 endTime = 3;
+    uint32 excludeMidday = 4;
+}
+
+message UserInfo {
+    uint32 weight = 1;
+    uint32 height = 2;
+    uint32 age = 3;
+    uint32 sex = 4;
+    uint32 weightOfg = 5;
+}
+
+message StepGoal {
+    uint32 steps = 1;
+}
+
+message CalorieGoal {
+    uint32 calories = 1;
+}
+
+message ExerciseTimeGoal {
+    int32 exercise_time_goal = 1;
+}
+
+message ActivityGoal {
+    int32 activity_goal = 1;
+}
+
+message SportHrWarn {
+    uint32 sw = 1;
+    uint32 warnValue = 2;
+}
+
+message SwitchCmd {
+    SWITCH_CMD cmd = 1;
+    oneof payload {
+        HrSwitch hisHrSw = 5;
+        FcSwitch fcSw = 6;
+    }
+}
+
+message PreferenceBody {
+    PREFERENCE cmd = 1;
+    oneof payload {
+        UserInfo userInfo = 2;
+        Sedentary sedentary = 3;
+        StepGoal stepGoal = 4;
+        SwitchCmd swCmd = 6;
+        SportHrWarn sportHrWarn = 7;
+        GpsBootMode gpsBootMode = 8;
+        CalorieGoal calGoal = 11;
+        DailyHrWarnConfig dailyHrWarnConfig = 13;
+        SportAutoDetectSw sportAutoDetectSw = 17;
+        SportAutoPauseSw sportAutoPauseSw = 18;
+        AirPressure airPressure = 19;
+    }
+}
+
+message HrSwitch {
+    uint32 enable = 1;
+    uint32 detectionType = 2;
+}
+
+message DailyHrWarnConfig {
+    uint32 high = 1;
+    uint32 low = 2;
+    uint32 duration = 3;
+    uint32 switch = 4;
+}
+
+message GpsBootMode {
+    string mode = 1;
+}
+
+message GpsResponse {
+    string time = 1;
+    uint32 ephemerisFileNumber = 2;
+}
+
+message SportAutoDetectSw {
+    uint32 sw = 1;
+    uint32 continuousTime = 2;
+}
+
+message SportAutoPauseSw {
+    uint32 sw = 1;
+    uint32 reserve = 2;
+}
+
+message AirPressure {
+    int32 errorCode = 1;
+    float value = 2;
+}
+
+message HealthSettings {
+    HEALTH_SETTING_CMD cmd = 1;
+    oneof payload {
+        SportAutoPauseSw sportAutoPauseSw = 2;
+    }
+}
+
+message SportHealthConfig {
+    string config = 1;
+}
+
+message McuVersion {
+    uint32 total = 1;
+    string romVer = 2;
+    string hwVer = 3;
+    string algoVer = 4;
+    string gpsVer = 5;
+    string uiVer = 6;
+    string fontVer = 7;
+    uint32 bn = 8;
+}
+
+message PressureWarnSetting {
+    uint32 switch = 1;
+}
+
+message PressureSetting {
+    uint32 switch = 1;
+    uint32 detectionType = 2;
+}
+
+message FcSwitch {
+    uint32 status = 1;
+}
+
+message FallDetectSw {
+    uint32 state = 1;
+}
+
+message HealthDataClear {
+    uint32 type = 1;
+    uint32 action = 2;
+    uint32 gmt = 3;
+}
+
+message McuGmtUpdate {
+    uint32 type = 1;
+    uint32 time = 2;
+    uint32 oldTime = 3;
+}
+
+message McuSysUpdate {
+    uint32 time = 1;
+    uint32 oldTime = 2;
+    sint32 timezone = 3;
+    sint32 oldTimezone = 4;
+}
+
+message SHSData {
+    int32 type = 1;
+    string data = 2;
+}
+
+message SHSRequest {
+    int32 type = 1;
+}
+
+message OsaSwitch {
+    uint32 osa = 1;
+}
+
+message BreatheRateSwitch {
+    uint32 breathe_rate = 1;
+}
+
+message Spo2AllDayMonitorSwitch {
+    uint32 spo2_all_day_monitor = 1;
+}
+
+message Spo2LowWarningSwitch {
+    uint32 spo2_low_warning = 1;
+    uint32 spo2_low_warning_value = 2;
+}
+
+message SportsVoiceBroadcastSwitch {
+    uint32 sports_voice_broadcast = 1;
+}
+
+message SportsDoubleVoiceBroadcastSwitch {
+    uint32 sports_double_voice_broadcast = 1;
+}
+
+message ButtonToPauseOrResumeSwitch {
+    uint32 button_to_pause_or_resume = 1;
+}
+
+message ResumeActivityReminderSwitch {
+    uint32 resume_activity_reminder = 1;
+}
+
+message AutoRecognizeSportType {
+    uint32 sport_type = 1;
+    uint32 sport_enable = 2;
+    uint32 record_type = 3;
+}
+
+message NotificationSwitch {
+    uint32 switchState =  1;
+    uint32 type = 2;
+}

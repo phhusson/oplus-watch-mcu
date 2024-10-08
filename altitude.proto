@@ -1,0 +1,36 @@
+syntax = "proto3";
+package Altitude;
+
+message AltitudeBaroReq{
+  int32 type = 1;
+  uint32 state = 2;
+}
+
+message AltitudePressureData{
+  int32 base_baro_err_code = 1;
+  int32  large_altitude = 2;
+  uint32 large_altitude_time = 3;
+  uint32 large_pressure = 4;
+  uint32 large_pressure_time = 5;
+  int32  small_altitude = 6;
+  uint32 small_altitude_time = 7;
+  uint32 small_pressure = 8;
+  uint32 small_pressure_time = 9;
+  uint32 start_time = 10;
+  uint32 end_time = 11;
+  int32 altitude = 12;
+  int32 pressure = 13;
+  repeated AltitudePressurePoint  altitudePressurePoint = 14;
+}
+
+message AltitudePressurePoint{
+  int32 altitude = 1;
+  uint32 pressure = 2;
+  uint32 id = 3;
+}
+
+message LSLP{
+  int32 err_code = 1;
+  float lslp = 2;
+}
+

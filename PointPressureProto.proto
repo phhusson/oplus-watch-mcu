@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package PointPressureProto;
+
+message PointPressureResponse {
+  int32 stress_val = 1;
+  int32 state = 2;
+  int32 reliability = 3;
+}
+
+message PressureRequest {
+  int32 sw = 1;
+  int32 interval = 2;
+}

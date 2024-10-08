@@ -1,0 +1,228 @@
+syntax = "proto3";
+package Sports;
+
+enum SPORT_TYPE {
+    TYPE_NULL = 0;
+    WALK = 1;
+    RUN = 2;
+    RIDE = 3;
+    SWIM = 7;
+    INDOOR_RUN = 10;
+    OUTDOOR_PHYSICAL_RUN = 13;
+    INDOOR_PHYSICAL_RUN = 14;
+    OUTDOOR_5KM_RELAX_RUN = 15;
+    INDOOR_5KM_RELAX_RUN = 16;
+    OUTDOOR_FAT_REDUCE_RUN = 17;
+    INDOOR_FAT_REDUCE_RUN = 18;
+    MAX = 40;
+}
+
+message SportStopRequest {
+    SPORT_TYPE sportType = 1;
+    uint32 timestamp = 2;
+    uint32 save = 3;
+    uint32 sportTotalTime = 4;
+    uint32 distance = 5;
+    uint32 isNormalEnd = 6;
+}
+
+message SportAutoDetectData {
+    uint32 sportType = 1;
+    uint32 sportStartTime = 2;
+    uint32 elapsedTime = 3;
+    uint32 step = 4;
+    uint32 calorie = 5;
+    uint32 distance = 6;
+    uint32 gmt = 7;
+    uint32 remind_times = 8;
+    uint32 vibrate = 9;
+    uint32 display_page= 10;
+}
+
+message SportsDataItemList {
+    repeated SportsDataItem item = 1;
+}
+
+message SportsDataItem {
+    int32 type = 1;
+    string name = 2;
+}
+
+message CustomSportsList {
+    repeated CustomSports data = 1;
+}
+
+message CustomSports {
+    string id = 1;
+    string name = 2;
+    int32 sportType = 3;
+    repeated SportsPageData selectedData = 4;
+    repeated SportsDataItem supportData = 5;
+    repeated SportsPageData normalSlectedData = 6;
+    int32 maxSelected = 7;
+}
+
+message SportsPageData {
+    int32 pageNum = 1;
+    repeated SportsDataItem dataItem = 2;
+}
+
+message SportType {
+    int32 type = 1;
+}
+
+message SportsId {
+    string id = 1;
+}
+
+message GpsSwitch {
+    uint32 switch_state = 1;
+}
+
+message RequestCount {
+    uint32 startTime = 1;
+    uint32 endTime = 2;
+    uint32 dataCount = 3;
+}
+
+message SportRequest {
+    uint32 startTime = 1;
+    uint32 endTime = 2;
+    uint32 support_tlv = 3;
+}
+
+message SportFileResponse {
+   uint32 start_time =1;
+   uint32 end_time=2;
+   repeated string sport_id=3;
+   uint32 more_data = 4;
+   bytes file_type = 5;
+}
+
+message SportDetailRequest {
+    string sportId = 1;
+}
+
+message SportDetailResponse {
+    string sportId = 1;
+    uint32 is_file_exit = 2;
+}
+
+message VO2MaxData {
+    float vo2max = 1;
+    uint32 time_stamp = 2;
+    uint32 show_notification = 3;
+}
+
+message SportRecordReport {
+    string sportId = 1;
+    uint32 sportType = 2;
+    string sportName = 3;
+    uint32 startTime = 4;
+    uint32 endTime = 5; 
+    uint32 totalSteps = 6;
+    uint32 totalDistance = 7;
+    uint32 totalTime = 8;
+    uint32 totalCalories = 9;
+    uint32 totalHeight = 10;
+    uint32 avgHeartRate = 11;
+    uint32 avgSpeed = 12;
+    uint32 maxSpeed = 13;
+    uint32 avgFrequency = 14;
+    uint32 achievePercent = 15;
+    string timeZone = 16;
+}
+
+message RealtimeDataItem {
+    uint32 timeStamp = 1;
+    uint32 pace = 2;
+    uint32 heartRate = 3;
+    uint32 frequency = 4;
+    uint32 elevation = 5;
+    uint32 state = 6;
+    uint32 distance = 7;
+    uint32 stamina = 8;
+    uint32 stride = 9;
+}
+
+message GpsDataItem {
+    uint32 timeStamp = 1;
+    double latitude = 2;
+    double longitude = 3;
+    uint32 speed = 4;
+    uint32 state = 5;
+    uint32 cog = 6;
+}
+
+enum AUTO_DETECT_SW_TYPE {
+    AUTO_DETECT_SW_TYPE_UNKNOW = 0;
+    CLEAR_TODAY_NO_REMIND = 1;
+    STOP_AUTO_DETECT = 2;
+    SET_TODAY_NO_REMIND = 3;
+}
+
+message AutoNotifySW {
+    uint32 sportType = 1;
+    uint32 operate = 2;
+    AUTO_DETECT_SW_TYPE notifySWType = 3;
+}
+
+message StartSportData {
+    uint32 time = 1;
+    uint32 sportType = 2;
+    uint32 goalType = 3;
+    uint32 goalValue = 4;
+}
+
+message SportDataCustomize{
+    uint32  sportType = 1;
+    repeated uint32 dataType= 2;
+}
+
+enum GOAL_TYPE {
+    NONE = 0;
+    DISTANCE = 1;
+    TIME = 2;
+    CALORIE = 3;
+    JUMPS = 4;
+    TRIPS = 5;
+    TURNS = 6;
+}
+
+message SportGoalSet{
+    uint32 state = 1;
+    SPORT_TYPE sportType = 2;
+    GOAL_TYPE goalType =3;
+    uint32 goalValue = 4;
+    uint32 imperialGoalValue = 5;
+}
+
+message SportHeartRateSwitch{
+    SPORT_TYPE sportType = 1;
+    uint32 switch = 2;
+}
+
+enum AUTO_DETECT_REMIND_CMD {
+    RESPONSE_NORMAL = 0;
+    CLICK_DETECT_REMIND = 5;
+}
+
+message AutoDetectResponse {
+    AUTO_DETECT_REMIND_CMD cmd = 1;
+    oneof payload {
+         DetectClickParam detectClickParam  = 4;
+    }
+}
+
+message DetectClickParam {
+    uint32 clickType = 1;
+}
+
+message SportsGpsData{
+   string sport_id = 1;
+   bytes timeStamp = 2;
+   bytes longitude = 3;
+   bytes latitude = 4;
+   bytes speed = 5;
+   bytes state = 6;
+}
