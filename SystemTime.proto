@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package SystemTime;
+
+message req_update_gmt_time_t {
+  uint32 time = 1;
+  uint32 oldTime = 2;
+}
+
+message req_update_sys_time_t {
+  uint32 time = 1;
+  uint32 oldTime = 2;
+  sint32 timezone = 3;
+  sint32 oldTimezone = 4;
+  uint32 type = 5;
+}
+
+message req_read_sys_time_t {
+  uint32 type = 1;
+}
+
+message rsp_update_gmt_time_t {
+  uint32 type = 1;
+  uint32 time = 2;
+  uint32 oldTime = 3;
+}
+
+message rsp_read_sys_time_t {
+  uint32 timeSource = 1;
+  uint32 type = 2;
+  uint32 time = 3;
+  sint32 timezone = 4;
+}
+
+message rsp_sync_summer_timezone_t {
+  uint32 supportSummerTimezone = 1;
+  sint32 timezone = 2;
+}

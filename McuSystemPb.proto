@@ -1,0 +1,63 @@
+syntax = "proto2";
+
+import "SystemTime.proto";
+
+package McuSystemPb;
+
+message motor_cali_rsp_t {
+  optional uint32 f0Param = 1;
+  optional uint32 caliF0 = 2;
+  optional uint32 caliOsc = 3;
+}
+
+message band_language_t {
+  optional uint32 language = 1;
+  optional string phoneMac = 2;
+  optional uint32 needUpdateWeather = 3;
+}
+
+message oobe_notify_t {
+  optional uint32 oobeStatus = 1;
+  optional string phoneMac = 2;
+  optional uint32 needUpdateWeather = 3;
+}
+
+message mcu_status {
+  optional uint32 status = 1;
+}
+
+message enable_mcu_status {
+  optional uint32 enable = 1;
+}
+
+message boot_notify {
+  optional uint32 type = 1;
+  optional oobe_notify_t oobe = 2;
+  optional SystemTime.rsp_read_sys_time_t sysTime = 3;
+}
+
+message reboot_reason {
+  optional uint32 reason = 1;
+  optional SystemTime.rsp_read_sys_time_t mcuSysTime = 2;
+  optional uint32 eStatus = 3;
+}
+
+message backlight {
+  optional float c0 = 1;
+  optional float c1 = 2;
+  optional float time = 3;
+  optional float gain = 4;
+}
+
+message screen_rotation {
+  optional uint32 rotation = 1;
+}
+
+message conan_flag_t {
+  optional uint64 data = 1;
+}
+
+message brightness_adapt {
+  optional uint32 brightness = 1;
+  optional uint32 lux = 2;
+}
