@@ -180,7 +180,7 @@ message OWSwitch {
 }
 
 message OWStatus {
-    uint32 status = 1;
+    optional uint32 status = 1;
 }
 
 message RequestOWSwitchStatus {

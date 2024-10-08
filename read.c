@@ -6,6 +6,7 @@
 #include <fcntl.h>
 
 #include "McuSystemPb.pb.h"
+#include "PreferenceProvider.pb.h"
 #include <pb_encode.h>
 #include <pb_decode.h>
 
@@ -16,9 +17,9 @@ enum channels {
     MSG_CONNECTION_PARAM = 1,
     MSG_HOST_ENABLE_ACTIVITY_STATUS_REPORT = 334,
     MSG = 360,
-    MSG_HOST_BOOT_COMPLETE_NOMAL_MODE = 373,
-    MSG_HOST_ENTER_POWEROFF_MODE = 374,
-    MSG_HOST_ENTER_BAND_MODE = 375,
+    MSG_HOST_BOOT_COMPLETE_NOMAL_MODE = 373, // PreferenceProvider.oppo_mcu_mode_t
+    MSG_HOST_ENTER_POWEROFF_MODE = 374, // PreferenceProvider.oppo_mcu_mode_t
+    MSG_HOST_ENTER_BAND_MODE = 375, // PreferenceProvider.oppo_mcu_mode_t
     MSG_HOST_CUR_WORK_MODE_REQUEST = 376,
     MSG_HOST_GET_CUR_HAND_MODE = 378,
     MSG_HOST_ANDROID_BOOT_NOTIFY = 386, // McuSystemPb.boot_notify
@@ -192,6 +193,9 @@ enum channels {
     MSG_SPORTS_NOTIFY_PER_KILOMETER = 352,
     MSG_SPORTS_STORAGE_WRITE_CROSS = 351,
     MSG_SPORTS_TEST_SPI = 353,
+
+    MSG_WRIST_BAND_RESPONE = 388,
+    MSG_MCU_RESPONSE_ACTIVITY_DATA = 337, // timestamp (part of protobuf), bytearray uint32_t [calories, distance, height, exercise, type, steps]
 };
 
 void send_message(int fd, int channel, int len, uint8_t *buf) {
@@ -275,6 +279,49 @@ int main() {
             send_message(fd, MSG_HOST_ANDROID_BOOT_NOTIFY, ostream.bytes_written, buf);
         }
         if (channel == MSG_MCU_CUR_WORK_MODE_RESPONE) {
+            PreferenceProvider_OppoMcuWorkModeResponseT message = PreferenceProvider_OppoMcuWorkModeResponseT_init_zero;
+            pb_istream_t stream = pb_istream_from_buffer(buf + 4, len);
+            int status = pb_decode(&stream, PreferenceProvider_OppoMcuWorkModeResponseT_fields, &message);
+            printf("Received mcu work mode %d - %d/%d, lightCali %d(red %d), lastMode %d/%d, rebootReason %d/%d, type %d/%d\n",
+                    status,
+                    1, message.mode,
+                    message.has_lightCali, message.lightCali.red_max_lux,
+                    1, message.lastMode,
+                    1, message.rebootReason,
+                    1, message.type);
+        }
+        if (channel == MSG_MCU_OFF_WRIST_STATUS_UPDATE) {
+            PreferenceProvider_OWStatus message = PreferenceProvider_OWStatus_init_zero;
+            pb_istream_t stream = pb_istream_from_buffer(buf + 4, len);
+            int status = pb_decode(&stream, PreferenceProvider_OWStatus_fields, &message);
+            printf("Received off-wrist status update %d -- %d/%d\n",
+                    status,
+                    message.has_status, message.status);
+#if 0
+            // We receive after like one minute an off-wrist status update without a status, use that to trigger an event later
+            if (!message.has_status) {
+                PreferenceProvider_OppoMcuModeT m = PreferenceProvider_OppoMcuModeT_init_zero;
+                m.mode = 1; // 1 = manual, 2 = confirm, 3 = timeout, 4 = other
+                m.type = 1; // 0 = android, 1 = wrist-band, 2 = off
+                m.has_sysTime = 1;
+                m.sysTime.time = time(NULL);;
+                m.sysTime.oldTime = 0;
+                m.sysTime.timezone = 60; // GMT+1
+                m.sysTime.oldTimezone = 60; // GMT+1
+                m.sysTime.type = 0;
+                pb_ostream_t ostream = pb_ostream_from_buffer(buf, sizeof(buf));
+                status = pb_encode(&ostream, PreferenceProvider_OppoMcuModeT_fields, &m);
+                printf("Serializing oppomcumode %d %d\n", status, ostream.bytes_written);
+
+                send_message(fd, MSG_HOST_ENTER_BAND_MODE, ostream.bytes_written, buf);
+            }
+#endif
+        }
+        if (channel == MSG_WRIST_BAND_RESPONE) {
+            printf("Received wrist band mode response\n");
+        }
+        if (channel == MSG_MCU_RESPONSE_ACTIVITY_DATA) {
+            printf("Received activity data\n");
         }
     }
 }

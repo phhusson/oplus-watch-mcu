@@ -168,6 +168,7 @@ typedef struct _PreferenceProvider_OWSwitch {
 } PreferenceProvider_OWSwitch;
 
 typedef struct _PreferenceProvider_OWStatus {
+    bool has_status;
     uint32_t status;
 } PreferenceProvider_OWStatus;
 
@@ -314,7 +315,7 @@ extern "C" {
 #define PreferenceProvider_ChargeStatusT_init_default {0}
 #define PreferenceProvider_McuVersion_init_default {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0}
 #define PreferenceProvider_OWSwitch_init_default {0}
-#define PreferenceProvider_OWStatus_init_default {0}
+#define PreferenceProvider_OWStatus_init_default {false, 0}
 #define PreferenceProvider_RequestOWSwitchStatus_init_default {0}
 #define PreferenceProvider_ResponseOWSwitchStatus_init_default {0}
 #define PreferenceProvider_RequestOWStatus_init_default {0}
@@ -344,7 +345,7 @@ extern "C" {
 #define PreferenceProvider_ChargeStatusT_init_zero {0}
 #define PreferenceProvider_McuVersion_init_zero  {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0}
 #define PreferenceProvider_OWSwitch_init_zero    {0}
-#define PreferenceProvider_OWStatus_init_zero    {0}
+#define PreferenceProvider_OWStatus_init_zero    {false, 0}
 #define PreferenceProvider_RequestOWSwitchStatus_init_zero {0}
 #define PreferenceProvider_ResponseOWSwitchStatus_init_zero {0}
 #define PreferenceProvider_RequestOWStatus_init_zero {0}
@@ -619,7 +620,7 @@ X(a, STATIC,   SINGULAR, UINT32,   sw,                1)
 #define PreferenceProvider_OWSwitch_DEFAULT NULL
 
 #define PreferenceProvider_OWStatus_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, UINT32,   status,            1)
+X(a, STATIC,   OPTIONAL, UINT32,   status,            1)
 #define PreferenceProvider_OWStatus_CALLBACK NULL
 #define PreferenceProvider_OWStatus_DEFAULT NULL
 
