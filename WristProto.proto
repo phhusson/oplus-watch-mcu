@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+package wear.framework.mcuproto.nano;
+
+message liftwrist_switch_set_info_t {
+  optional uint32 sw = 1;
+}
+
+message liftwrist_response_update_status_t {
+  optional uint32 status = 1;
+}
+
+message liftwrist_request_switch_status_t {
+  optional uint32 status = 1;
+}
+
+message liftwrist_switch_response_info_t {
+  optional uint32 status = 1;
+}
+
